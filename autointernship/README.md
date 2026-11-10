@@ -7,7 +7,7 @@ A Chrome extension that fills job applications from a profile you save once, the
 
 ## Install
 
-Install AutoInternship from the [Chrome Web Store](https://chromewebstore.google.com/detail/obcgedfhihanpajdplmhnefodnhdjila). It also works in Edge: allow extensions from other stores when Edge asks. The profile page opens on first install. Pin AutoInternship from the puzzle-piece menu.
+Install AutoInternship from the [Chrome Web Store](https://chromewebstore.google.com/detail/autointernship/cdfkbdkmandhnmaejaknimdhepipbpin). It also works in Edge: allow extensions from other stores when Edge asks. The profile page opens on first install. Pin AutoInternship from the puzzle-piece menu.
 
 **Switching from a copy you loaded unpacked?** The store copy keeps its own profile. Click **Download backup** in the old copy, then **Restore from backup** in the new one. Then remove the old copy in `chrome://extensions`, so pages don't get two Fill buttons.
 
