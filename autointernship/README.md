@@ -7,10 +7,11 @@ A Chrome extension that fills job applications from a profile you save once, the
 
 ## Install
 
-1. Keep this folder somewhere permanent (the browser loads it from there).
-2. Open `chrome://extensions` (or `edge://extensions`) and turn on **Developer mode**.
-3. Click **Load unpacked** and choose the `autointernship` folder.
-4. Pin AutoInternship from the puzzle-piece menu. The profile page opens on first install.
+Install AutoInternship from the [Chrome Web Store](https://chromewebstore.google.com/detail/autointernship/cdfkbdkmandhnmaejaknimdhepipbpin). It also works in Edge: allow extensions from other stores when Edge asks. The profile page opens on first install. Pin AutoInternship from the puzzle-piece menu.
+
+**Switching from a copy you loaded unpacked?** The store copy keeps its own profile. Click **Download backup** in the old copy, then **Restore from backup** in the new one. Then remove the old copy in `chrome://extensions`, so pages don't get two Fill buttons.
+
+**For developers:** to run it from this folder, turn on **Developer mode** in `chrome://extensions` (or `edge://extensions`), click **Load unpacked** and choose the `autointernship` folder.
 
 ## Set up your profile
 
@@ -40,7 +41,7 @@ It always leaves these for you or Claude: open-ended questions, cover letters, c
 
 ## Privacy
 
-Your profile and resume stay in this browser. AutoInternship makes no network requests. The Fill button appears only on the application sites listed in `manifest.json` (Greenhouse, Lever, Ashby, Workday and others), and only a real click starts a fill, so a web page can't start one by itself. You can hide the button on the profile page. Some job sites restrict automated tools in their terms, so review every application before you submit it.
+Your profile and resume stay in this browser. AutoInternship makes no network requests. The Fill button appears only on the application sites listed in `manifest.json` (Greenhouse, Lever, Ashby, Workday and others), and only a real click starts a fill, so a web page can't start one by itself. You can hide the button on the profile page. Some job sites restrict automated tools in their terms, so review every application before you submit it. The full policy is in [PRIVACY.md](PRIVACY.md).
 
 ## If something goes wrong
 
