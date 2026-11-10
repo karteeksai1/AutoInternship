@@ -20,7 +20,7 @@ It submits only when you ask it to, and never uses LinkedIn, never types passwor
 
 1. **Download this project.** Click the green **Code** button at the top of this page, then **Download ZIP**. Right-click the file and choose **Extract All** (on a Mac, double-click it). The next step uses its two skill folders.
 2. **Add the two skills.** Right-click the `internship-application` folder and compress it to a ZIP (Windows: **Compress to** → **ZIP File**; Mac: **Compress**). Do the same for `internship-tracker`. In Claude, open **Customize → Skills** and upload both ZIPs. If there's no upload option, turn on code execution in **Settings → Capabilities** ([help](https://support.claude.com/en/articles/12512180-use-skills-in-claude)).
-3. **Add the AutoInternship extension.** Install it from the [Chrome Web Store](https://chromewebstore.google.com/detail/obcgedfhihanpajdplmhnefodnhdjila). Its profile page opens: fill it in once. See [its README](autointernship/README.md) for more.
+3. **Add the AutoInternship extension.** Install it from the [Chrome Web Store](https://chromewebstore.google.com/detail/autointernship/cdfkbdkmandhnmaejaknimdhepipbpin). Its profile page opens: fill it in once. See [its README](autointernship/README.md) for more.
 4. **Add Claude in Chrome.** Install it from the Chrome Web Store and sign in ([help](https://support.claude.com/en/articles/12012173-get-started-with-claude-in-chrome)). It lets Claude work in your browser and press the extension's Fill button.
 
 ## Start applying
