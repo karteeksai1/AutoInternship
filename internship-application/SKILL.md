@@ -29,7 +29,7 @@ For Fill all or Submit, read `references/submitting.md` at the start. A mode las
 Checks before saving:
 
 - **Resume PDF**: `check_tailored.py` shows nothing under `fix`, every `review` item is handled or explained in changes.md, and you've looked at the page image (step 3).
-- **Cover letter**: `check_resume.py` against the master and profile, with the company and role allowed; no placeholders; the company and role names are right.
+- **Cover letter**: `cover_letter.py` shows nothing under `fix`, and every `review` item is handled (tailoring.md, "Cover letter").
 - **Markdown and notes**: read back once for wrong company names, empty sections and placeholders.
 
 ## The job-search folder
@@ -68,7 +68,7 @@ Never operate LinkedIn: no Easy Apply, no browsing or reading its pages. Its ter
 python scripts/fetch_posting.py "<link>" --out-dir "<scratch>/postings" --tracker "<folder>/tracker.xlsx" --profile "<folder>/profile.json"
 ```
 
-It writes the posting as markdown, with the form's questions where the site publishes them (Greenhouse, Ashby). It covers Greenhouse, Ashby, Lever, Workday, SmartRecruiters, Rippling, Oracle, iCIMS, Atlassian, Amazon, TikTok and ByteDance, and other sites whose pages carry job data (Meta, Jibe, Eightfold, Paylocity). Each posting gets a `screen` against the profile: `skip`, with the sentence in `screen_why`, is a step 2 skip; `check` quotes sentences to judge in step 2; `ok` still goes through step 2. When it can't (`error`), or for the user's open tab or pasted text, use the browser or the text. On `network_blocked`, pass its `hint` to the user once and use the browser for the rest of the session; do the same if every link fails with "couldn't connect". Follow job boards through to the real application form at step 5.
+It writes the posting as markdown, with the form's questions where the site publishes them (Greenhouse, Ashby) and a `Cover letter:` line (`cover_letter`: required, optional, asked, not wanted, none or unknown). It covers Greenhouse, Ashby, Lever, Workday, SmartRecruiters, Rippling, Oracle, iCIMS, Atlassian, Amazon, TikTok and ByteDance, and other sites whose pages carry job data (Meta, Jibe, Eightfold, Paylocity). Each posting gets a `screen` against the profile: `skip`, with the sentence in `screen_why`, is a step 2 skip; `check` quotes sentences to judge in step 2; `ok` still goes through step 2. When it can't (`error`), or for the user's open tab or pasted text, use the browser or the text. On `network_blocked`, pass its `hint` to the user once and use the browser for the rest of the session; do the same if every link fails with "couldn't connect". Follow job boards through to the real application form at step 5.
 
 Capture: company, role, term, dates or length, location and on-site policy, pay, deadline, eligibility (class year, graduation window, degree level, majors, enrollment), required documents and the URL. On `check_company`, confirm the company name from the description.
 
@@ -117,9 +117,11 @@ Write `changes.md`: after the last check, fill the `<...>` slots in the file the
 
 **Written answers**: for text-box questions in job-posting.md (the fetch result's `written`), draft answers now, in scratch: specific to this company and team, built on real evidence, the user's own part of group work, under 150 words unless asked for more, in the user's `writingStyle`, following any `extraRules`.
 
+**Cover letter**: write, check and save one as tailoring.md's "Cover letter" says, whenever the form may have a place for one, optional fields included.
+
 ### 4. Checkpoint
 
-Show the main changes in a few lines, eligibility notes, gaps, the PDF path and any drafted written answers, and ask whether to apply with it. Skip this in auto mode ("auto", "don't ask", or the same in the user's words). Submit mode keeps it unless the user also said auto. In batches, do one combined checkpoint after all the tailoring.
+Show the main changes in a few lines, eligibility notes, gaps, the PDF path, the cover letter's file name and any drafted written answers, and ask whether to apply with it. Skip this in auto mode ("auto", "don't ask", or the same in the user's words). Submit mode keeps it unless the user also said auto. In batches, do one combined checkpoint after all the tailoring.
 
 ### 5. Fill the application
 
