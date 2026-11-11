@@ -95,7 +95,7 @@ Every addition goes through the rewrite pass. If a build spills onto page 2, tak
 - School, degree, major, minor and expected graduation exactly as in the master ("Expected May 2028").
 - GPA: keep it if the master shows it; never round (3.67 stays 3.67) or change the scale. If the posting requires a GPA, the master omits it and the profile has it, add it in the master's format.
 - Relevant coursework: the four to six courses that best match, most relevant first, with the master's course names; only courses taken or in progress.
-- Honors keep their exact wording if they stay.
+- Bullets under a school never give a school's full name (with "University", "College", "Institute" or "School"): "Representing Northwind at the 2026 ICPC", not "Representing Northwind University at the 2026 ICPC". Apart from that, honors keep their exact wording if they stay.
 
 ## Projects
 

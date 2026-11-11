@@ -24,7 +24,7 @@ Read this before filling a form, the first time in a session. Filling subagents 
 
 ## Filling the form
 
-Open the form. Accept "Autofill from resume" if offered (Workday), then check the parsed fields. Then press the AutoInternship Fill button if the page has it.
+Open the form. Accept "Autofill from resume" if offered (Workday), then check the parsed fields. In Education, keep only the schools in profile.json's `education` (the master's Education section if that's empty). Delete every other entry the parse added, the whole entry: a name read from a bullet ("Representing Northwind University") or a high school the profile doesn't list. Never just empty its fields or turn it into another school. Then press the AutoInternship Fill button if the page has it.
 
 **Keep browser work cheap:**
 
