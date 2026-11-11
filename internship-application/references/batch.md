@@ -39,8 +39,9 @@ You're tailoring one internship application in a batch run by the internship-app
 With your file-reading tool, not cat, read <skill>/SKILL.md, the posting and the profile first, and do SKILL.md
 steps 1 and 2 for this posting only (the tracker check is already done): create the job folder, save job-posting.md,
 check eligibility. If it's a skip, reply now. Otherwise read <skill>/references/tailoring.md (and references/overleaf.md
-if the master is .tex) and the master, then do step 3: tailor, check and save the resume, write changes.md, and draft
-any written answers into <scratch>/answers/<NN>.md. Read each file once.
+if the master is .tex) and the master, then do step 3: tailor, check and save the resume, write changes.md, write the
+cover letter when tailoring.md's "Cover letter" says (optional fields included), and draft any written answers into
+<scratch>/answers/<NN>.md. Read each file once.
 Don't open the application form, don't change the tracker, and don't start subagents of your own.
 Work only from the master resume: never open resumes, resume-src or changes.md in other job folders.
 For a .tex master, never type LaTeX into a shell command, heredoc or script: use the Write and Edit tools (copying files with cp, head or cat is fine).
@@ -55,6 +56,7 @@ Folder: <job folder>
 Resume: <PDF file name>; page <filled, or N lines free and why>
 Changes: <two or three short lines>
 Gaps: <one line>
+Cover letter: <file name (and the combined PDF's), or none: the Cover letter line's value>
 Answers: <drafts file, or none>
 Problems: <none, or what needs the user>
 ```
@@ -77,6 +79,7 @@ step still to do: the current step once every other one is completed (a green ch
 In Review mode, stop when that last step opens.
 Don't leave the step that takes the resume until it shows the tailored PDF's file name; if you can't attach
 it there (on iCIMS, Replace Resume shows the file box), stop on that step and hand it over.
+Attach or paste the cover letter wherever the form takes one, optional fields included (filling.md, "Cover letter").
 The user <saw | didn't see (auto)> the drafted answers.
 For this application only: fill the form in the user's browser up to the review page or the first thing
 that needs the user, add each page's fields to application-record.md as you go, and log the tracker row
@@ -88,6 +91,7 @@ Browser work (filling.md has the rest): find fields with find or read_page and c
 reference, never by screen position, and never scroll by screen position. At most one screenshot per page,
 as a call of its own, never inside a batch.
 - Job folder: <folder>  Application link: <url; an icims.com link with in_iframe=1 added>  Resume: <PDF path>  Answers: <drafts file, or none>
+- Cover letter: <letter path and cover-letter.txt path (and the combined PDF's), or none>  Master resume: <path>
 - Profile: <folder>/profile.json  Tracker: <folder>/tracker.xlsx
 - Tab: <open a new tab of your own | continue in tab <id>: the user has since <what they did>, and answered: <answers>
   | open a new tab of your own and continue from application-record.md: the tab group was lost>

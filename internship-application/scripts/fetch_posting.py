@@ -26,6 +26,13 @@ pay and posted date, then the description. Where the site publishes its form (Gr
 application questions, leaving out the contact and resume fields the AutoInternship extension fills. Knowing
 the questions early means written answers can be drafted, and shown at the checkpoint, before the form opens.
 
+Each posting also gets a "Cover letter:" line and a "cover_letter" value, so the tailoring agent knows whether
+to write one before the form is open: required or optional (a form field), asked (the description asks for
+one), not wanted (the description says not to send one), none (the published form has no field for one; also
+Workday, whose forms usually have none) or unknown (the site doesn't publish its form). The user wants a letter
+wherever there's a place for one, optional fields included. Until 2026-11-10 the cover-letter field was dropped
+here as a standard field, so no agent knew a form had one, and almost no letters were written.
+
 --tracker adds the tracker rows for the same company (and flags the same posting link), so the duplicate check
 needs no separate call. --jobs reads the links above the "# done" line, ignoring the notes after "#".
 
@@ -171,9 +178,10 @@ def money(n, currency='USD'):
     return f'${text}' if currency == 'USD' else f'{text} {currency}'
 
 
-# Fields every application has. The extension fills these, so listing them would only add reading.
+# Fields every application has. The extension fills these, so listing them would only add reading. The cover
+# letter isn't one of them: the extension never attaches it, and Claude writes one for it (cover_letter() below).
 STANDARD = re.compile(r'^((preferred |legal |full )?(first |last )?name|e ?mail( address)?|phone( number)?|mobile( phone)?|'
-                      r'resume|cv|resume cv|cover letter|(linkedin|github|portfolio|personal website|website|websites|'
+                      r'resume|cv|resume cv|(linkedin|github|portfolio|personal website|website|websites|'
                       r'other website)( profile| url| link)?|(other |additional )?links?|location( city)?|city|current location)$')
 
 
@@ -232,7 +240,7 @@ def greenhouse(p):
     return {'company': d.get('company_name') or board, 'role': d.get('title'), 'location': (d.get('location') or {}).get('name'),
             'deadline': day(d.get('application_deadline')), 'pay': '; '.join(pay), 'posted': day(d.get('first_published') or d.get('updated_at')),
             'description': description, 'questions': [q for q in questions if q], 'self_id': [s for s in self_id if s],
-            'consent': consent, 'form_note': ''}
+            'consent': consent, 'form_note': '', 'form_read': True}
 
 
 _ashby_boards = {}  # one board download per company per run, however many of its postings are queued
@@ -261,13 +269,15 @@ def ashby(p):
         raise Failed('not on the company\'s public job board: the posting may have closed. Open it in the browser to check.')
     # The documented posting API has no company name or form. Ashby's own job pages get both from this endpoint;
     # if it ever changes, the posting still comes through, with the name taken from the link.
-    company, questions, from_url = org.replace('-', ' ').title(), [], True
+    company, questions, from_url, form_read = org.replace('-', ' ').title(), [], True, False
     try:
         name = (ashby_gql(ASHBY_NAME, {'org': org}).get('organization') or {}).get('name')
         if name:
             company, from_url = name, False
         g = ashby_gql(ASHBY_FORM, {'org': org, 'id': jid})
-        for s in ((g.get('jobPosting') or {}).get('applicationForm') or {}).get('sections') or []:
+        sections = ((g.get('jobPosting') or {}).get('applicationForm') or {}).get('sections') or []
+        form_read = bool(sections)  # a failed or empty form lookup must not read as "no cover-letter field"
+        for s in sections:
             for e in s.get('fieldEntries') or []:
                 f = e.get('field') or {}
                 options = [v.get('label') for v in f.get('selectableValues') or []]
@@ -280,7 +290,7 @@ def ashby(p):
             'location': '; '.join(l for l in locations if l) + (f" ({j['workplaceType']})" if j.get('workplaceType') else ''),
             'deadline': '', 'pay': comp.get('compensationTierSummary') or comp.get('scrapeableCompensationSalarySummary') or '',
             'posted': day(j.get('publishedAt')), 'description': md(j.get('descriptionHtml')) or j.get('descriptionPlain', ''),
-            'questions': [q for q in questions if q], 'self_id': [], 'consent': [], 'form_note': ''}
+            'questions': [q for q in questions if q], 'self_id': [], 'consent': [], 'form_note': '', 'form_read': form_read}
 
 
 def lever(p):
@@ -858,6 +868,72 @@ def move_skips(path, skipped):
     return len(moved)
 
 
+COVER = re.compile(r'\bcover ?letters?\b', re.I)
+VIDEO_COVER = re.compile(r'\bvideo cover ?letters?\b', re.I)  # a recording, which only the user can make
+# "No cover letter required", "cover letters are optional", "feel free to include a cover letter": not required.
+COVER_OPTIONAL = re.compile(
+    r'\bcover ?letters?\b[^.]{0,30}\b(not|isn\'?t|aren\'?t)\b[^.]{0,12}\b(required|needed|necessary|mandatory)\b'
+    r'|\bno cover ?letters?\b[^.]{0,15}\b(required|needed|necessary)\b'
+    r'|\b(optional|optionally|may|can|feel free to|welcome to|if you (would like|wish|want|choose))\b[^.]{0,40}\bcover ?letters?\b'
+    r'|\bcover ?letters?\b[^.]{0,25}\b(optional|welcome|encouraged)\b', re.I)
+# "Please do not send cover letters", "We don't read cover letters", "No cover letters, please."
+COVER_UNWANTED = re.compile(
+    r'\b(do not|don\'?t|please do not|we do not|we don\'?t|will not|won\'?t|never)\b[^.]{0,30}'
+    r'\b(send|submit|include|attach|upload|accept|read|review|consider)\w*\b[^.]{0,25}\bcover ?letters?\b'
+    r'|\bcover ?letters?\b[^.]{0,30}\b(will not|won\'?t|are not|aren\'?t|is not|isn\'?t)\b[^.]{0,10}\b(be )?(read|reviewed|considered|accepted)\b'
+    r'|\b(in lieu of|instead of|rather than|in place of) (a |an |your )?cover ?letters?\b'
+    r'|^no cover ?letters?(,? please)?[.!]?$', re.I)
+# Checked first, so "we will not consider applications without a cover letter" and "applications that do not
+# include a cover letter will not be considered" aren't read as "don't send one".
+COVER_NEEDED = re.compile(
+    r'\bwithout (a |an |your )?cover ?letters?\b|\b(do not|don\'?t) forget\b|\bincomplete\b'
+    r'|\b(applications?|applicants?|submissions?|candidates?)\b[^.]{0,80}\b(will not|won\'?t|cannot|can\'?t|not) be '
+    r'(considered|reviewed|accepted|processed)\b', re.I)
+# A field for the letter itself is a short label ("Cover Letter", "Add a file (cover letter, portfolio, etc.)"). A
+# question that mentions one ("While we don't require any cover letter ... is there anything else you'd like to
+# share?", "In lieu of a cover letter, tell us why") is an ordinary written question.
+COVER_NOT_FIELD = re.compile(r'\?|\b(in lieu of|instead of|rather than|in place of)\b|\b(do not|don\'?t|not) require', re.I)
+
+
+def cover_field(q):
+    label = q['label']
+    return bool(COVER.search(label)) and not VIDEO_COVER.search(label) and len(label) <= 60 and not COVER_NOT_FIELD.search(label)
+# Privacy notices list the cover letter among the data they keep; that isn't a request for one.
+COVER_PRIVACY = re.compile(r'\b(we collect|collected|personal (information|data)|privacy|retain\w*|retention|categories of)\b', re.I)
+
+
+def cover_letter(site, p):
+    """(value, the job-posting.md line). A letter can be asked for in a form field, which only the sites that
+    publish their forms show (form_read), or in a sentence of the description ("Please identify the role you are
+    applying for in your cover letter"), which the letter then has to answer, so that sentence is quoted."""
+    field = next((q for q in p['questions'] if cover_field(q)), None)
+    said = {'unwanted': [], 'optional': [], 'asked': []}
+    for s, _, _ in sentences(p['description']):
+        if COVER.search(s) and not VIDEO_COVER.search(s) and not COVER_PRIVACY.search(s):
+            kind = ('asked' if COVER_NEEDED.search(s) else 'unwanted' if COVER_UNWANTED.search(s)
+                    else 'optional' if COVER_OPTIONAL.search(s) else 'asked')
+            said[kind].append(s if len(s) <= 300 else s[:299].rstrip() + '…')
+    quote = lambda kind: ' '.join(f'"{s}"' for s in said[kind][:2])
+    where = f' (form field "{field["label"]}", {field["kind"]})' if field else ''
+    asks = said['asked'] or said['optional']
+    also = f"; the posting says: {quote('asked' if said['asked'] else 'optional')}" if asks else ''
+    if field and field['required']:
+        return 'required', f'required{where}{also}'
+    if said['unwanted']:  # the posting's own words win over a field left on the company's standard form
+        return 'not wanted', f"not wanted: {quote('unwanted')}"
+    if field:
+        return 'optional', f'optional{where}{also}'
+    if said['asked']:
+        return 'asked', f"asked for in the posting: {quote('asked')}"
+    if said['optional']:
+        return 'optional', f"optional in the posting: {quote('optional')}"
+    if site == 'workday':
+        return 'none', 'none (Workday forms usually have no field for one)'
+    if p.get('form_read'):
+        return 'none', "none (the site's form data has no field for one)"
+    return 'unknown', "unknown (the site doesn't publish its form)"
+
+
 SOURCE = {'other': 'the posting page', 'icims': 'the iCIMS posting page', 'amazon': 'the Amazon posting page',
           'bytedance': 'the posting page', 'atlassian': "Atlassian's public job list"}
 
@@ -870,6 +946,8 @@ def as_markdown(url, site, p):
              + (' (company name from the link: check it against the description)' if p.get('company_from_url') else '')]
     if p.get('screen_why'):
         lines.append(f"- Eligibility screen: {p['screen']}: " + '; '.join(p['screen_why']))
+    if p.get('cover_line'):
+        lines.append(f"- Cover letter: {p['cover_line']}")
     lines += ['', '## Description', '', p['description'] or '(empty: open the posting in the browser)']
     if p['questions'] or p['self_id'] or p['consent'] or p['form_note']:
         lines += ['', '## Application questions', '']
@@ -978,12 +1056,14 @@ def main():
                 raise Failed("the page's job data has no title or description. Open it in the browser.")
             if status:
                 p['screen'], p['screen_why'] = screen(p, status)
+            p['cover_letter'], p['cover_line'] = cover_letter(site, p)
             path = os.path.join(a.out_dir, file_name(n, p))
             with open(path, 'w', encoding='utf-8') as f:
                 f.write(as_markdown(url, site, p))
             item.update({'ok': True, 'company': p['company'], 'role': p['role'], 'location': p['location'], 'deadline': p['deadline'],
                          'pay': p['pay'], 'posted': p['posted'], 'file': path, 'questions': len(p['questions']),
-                         'written': [q['label'][:120] for q in p['questions'] if q['kind'] == 'text box']})
+                         'written': [q['label'][:120] for q in p['questions'] if q['kind'] == 'text box' and not cover_field(q)],
+                         'cover_letter': p['cover_letter']})
             if status:
                 item['screen'] = p['screen']
                 if p['screen_why']:
