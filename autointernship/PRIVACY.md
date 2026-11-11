@@ -30,7 +30,7 @@ Only to fill job application forms, when you ask: by clicking **Fill with AutoIn
 
 **Download backup** saves your profile (not your resume) as `profile.json` on your computer, and **Restore from backup** loads one. Where that file goes is up to you.
 
-This project also has Claude skills that can read `profile.json` from your job-search folder, and Claude in Chrome can read the fill report on the page. That happens in Claude, under Anthropic's privacy policy, not in this extension.
+This project also has Antigravity skills that can read `profile.json` from your job-search folder, and Antigravity's browser automation can read the fill report on the page. That happens in Antigravity, under your Antigravity / Google privacy settings, not in this extension.
 
 ## Permissions
 
@@ -50,4 +50,4 @@ If this policy changes, the new version is posted here with a new date.
 
 Open an issue at https://github.com/pqthangv/AutoInternshipClaude/issues.
 
-AutoInternship is a personal open-source project. It isn't affiliated with or endorsed by Anthropic or any job site.
+AutoInternship is a personal open-source project. It isn't affiliated with or endorsed by Google, Anthropic, or any job site.

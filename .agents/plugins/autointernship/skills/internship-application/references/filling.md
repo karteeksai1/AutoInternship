@@ -4,11 +4,11 @@ Read this before filling a form, the first time in a session. Filling subagents 
 
 ## Browsers, file uploads and sign-ins
 
-**Which browser.** Use Claude in Chrome in Google Chrome for the user's own browser. If its tab group keeps closing or you lose the tab after each action (as in Edge), tell the user once and switch to the built-in browser. The built-in browser can't attach files or use the AutoInternship Fill button.
+**Which browser.** Use Google Chrome via an installed Chrome MCP plugin (such as `chrome-devtools-plugin`) when available so the AutoInternship Chrome extension works directly on the page. Otherwise use Antigravity's built-in browser (`/browser`), noting that a browser session without the extension installed won't have the **Fill with AutoInternship** button and may not support local file uploads cleanly.
 
-**If the tab group disappears** ("This session's tab group no longer exists", or a tab "is not in Claude's tab group"), never start the form over. Make a new group (`tabs_context_mcp` with `createIfEmpty`), open the application link in a new tab, and continue from application-record.md; the user may need to sign in again. In a batch, follow the filling prompt instead (batch.md, "Sharing the browser").
+**If a tab or browser session resets**, never start the form over. Open a new tab to the application link and continue from `application-record.md`; the user may need to sign in again. In a batch, follow `batch.md` ("Sharing the browser").
 
-**Attaching files.** Attach the resume with your file upload tool on the step that asks for it, replacing any resume already there (a file from an earlier application on the site's profile). On iCIMS, click **Replace Resume** to show the file box. On a form with several steps, don't leave the resume's step until it shows the tailored PDF's file name. When you can't attach it (no file upload tool, or no reference for the file box), hand it to the user:
+**Attaching files.** Attach the resume with your browser's file-upload action on the step that asks for it, replacing any resume already there (a file from an earlier application on the site's profile). On iCIMS, click **Replace Resume** to show the file box. On a form with several steps, don't leave the resume's step until it shows the tailored PDF's file name. When you can't attach it (no file upload tool, or no reference for the file box), hand it to the user:
 
 - Give the full path as plain text, for example `C:\Users\<name>\Documents\Job search\Applications\2026-10-29 Northwind - Data Analyst Intern\Maya_Chen_Resume_Northwind.pdf`. On Windows they can paste it into the file dialog's File name box and press Enter.
 - On a form with several steps, stop on the resume's step and wait until the user says it's attached.
@@ -28,24 +28,24 @@ Open the form. Accept "Autofill from resume" if offered (Workday), then check th
 
 **Keep browser work cheap:**
 
-- Press the Fill button and read its report in one browser batch: click **Fill with AutoInternship**, wait about 10 seconds, then `get_page_text`. The report is at the top of the form's text, starting "AutoInternship report:". If it says it's still filling, wait 5 seconds and read again. (`read_page` on the panel shows only its name.)
-- For a form embedded in a frame, open the frame's own address in the tab first (for Greenhouse, the `job-boards.greenhouse.io/embed/job_app?...` link; for iCIMS, the page's link with `in_iframe=1` added). When `find` and `read_page` don't show a form's fields, on any page or step, it's in a frame: do this before anything else.
-- Find fields with `read_page` (interactive filter) or `find`, not screenshots. Set values with `form_input` instead of clicking and typing. Click by reference when the page gives one, not by screen position.
-- Never scroll by screen position. To reach a field, `scroll_to` its reference or click it by reference.
-- Send a group of browser actions (clicks, typing, waits, `find`, `get_page_text`) as one `browser_batch`, never as several browser calls at once. Fill several fields per batch, so a page takes as few batches as possible.
-- Custom dropdowns: for one you can type into, click it, type the option's text and press Enter, in one batch.
-- Workday "Select One" list buttons the report left: click the button, type the first words of the option as the form words it ("Yes", "No", "I am not"), and press Enter. Do every list on the step this way in one batch, then check them all with one `find`. For one that didn't take, click it and `find` the option in one batch, then click the option's reference.
-- Workday search lists (a Search box over "0 items selected"; the report calls them "search list"): click the box, type the value, press Enter once, wait 2 seconds and `find` the option, in one batch, then click the option's reference. Never press Enter a second time. When the list shows categories first (How Did You Hear: "Job Board", "Website"), click the category and pick inside it. Check with `find` that the list shows "1 item selected".
-- No screenshots to see options or check picks.
-- Screenshots: one per page or step, on its own after filling and before Save and Continue, to check nothing is red or empty, and one more only when something didn't take. Never add a screenshot to the end of a batch of actions. Check a click, a pick or typed text with `find` or the field's value in `read_page`, never a screenshot.
-- Don't reread the posting on the application page; it's in job-posting.md.
-- After Save and Continue, wait for the next step's heading (a short `find`) before pressing the Fill button again.
+- Press the Fill button and read its report: perform a real pointer click on **Fill with AutoInternship** (synthetic JS `.click()` is ignored because `bridge.js` checks `event.isTrusted`), wait about 10 seconds, then read the page text or DOM snapshot (`#autointernship-report-copy` or `#autointernship-report`). The report is at the top of the form's text, starting `"AutoInternship report:"`. If it says it's still filling, wait 5 seconds and read again.
+- For a form embedded in a frame, open the frame's own address in the tab first (for Greenhouse, the `job-boards.greenhouse.io/embed/job_app?...` link; for iCIMS, the page's link with `in_iframe=1` added). When DOM/accessibility inspection doesn't show a form's fields, on any page or step, it's in a frame: do this before anything else.
+- Find fields using DOM/accessibility snapshots or element queries, not screenshots. Fill inputs directly by element handle/selector/UID rather than guessing coordinates.
+- Never scroll blindly by screen coordinates; scroll the target element into view or act on it by element selector/UID.
+- Group independent actions where your browser tool supports it, or fill fields cleanly step-by-step without redundant snapshots between every single field.
+- Custom dropdowns: for one you can type into, click/focus it, type the option's text and press Enter.
+- Workday "Select One" list buttons the report left: click the button, type the first words of the option as the form words it ("Yes", "No", "I am not"), and press Enter. Do every list on the step, then verify them via DOM/accessibility inspection. For one that didn't take, click it, inspect the rendered listbox options, and click the matching option.
+- Workday search lists (a Search box over "0 items selected"; the report calls them "search list"): click the box, type the value, press Enter once, wait 2 seconds, inspect the options, then click the matching option. Never press Enter a second time. When the list shows categories first (How Did You Hear: "Job Board", "Website"), click the category and pick inside it. Check that the list shows "1 item selected".
+- No screenshots just to see dropdown options or check single picks.
+- Screenshots: at most one per page or step, after filling and before Save and Continue, to check nothing is red or empty, and one more only when something didn't take. Verify typed text or selected choices via DOM/accessibility state rather than taking repeated screenshots.
+- Don't reread the posting on the application page; it's in `job-posting.md`.
+- After Save and Continue, wait for the next step's heading before pressing the Fill button again.
 
 **With the Fill button.** It's a green **Fill with AutoInternship** tab on the right edge of the page (or of the embedded form) on supported sites.
 
-1. Click it. A panel opens, starting "AutoInternship report: filled N, left M."
-2. Read the report from the page text (from a screenshot of the panel only if the page text lacks it). It lists:
-   - **Left for you or Claude**: one line per remaining field, with its kind, `*` if required, and up to 8 choices.
+1. Click it (real click). A panel opens, starting `"AutoInternship report: filled N, left M."`
+2. Read the report from the page text/DOM (from a screenshot of the panel only if page text lacks it). It lists:
+   - **Left for you or Antigravity**: one line per remaining field, with its kind, `*` if required, and up to 8 choices.
    - **Filled**: what it entered, as `Label = value` pairs.
    - **Already filled**: what was there before.
 
@@ -56,7 +56,7 @@ Open the form. Accept "Autofill from resume" if offered (Workday), then check th
 4. Work through the Left list only, with the rules below. The resume upload is always on it.
 5. On multi-step forms (Workday, Oracle, iCIMS), press the button first on every step, Workday's Application Questions and Voluntary Disclosures included, then finish the step by hand, click the step button (**Save and Continue**, **Next**; on iCIMS **Submit**, as "iCIMS has no review page" below says), and wait for the next step. Repeat until the review page.
 
-**Without it** (no tab, the built-in browser, or the panel says it couldn't fill), fill the whole form from the profile and the master resume.
+**Without it** (the extension isn't installed in this browser, or the panel says it couldn't fill), fill the whole form from the profile and the master resume.
 
 **How to answer:**
 
@@ -101,7 +101,7 @@ Record values as they are on the page. With the Fill button, use its Filled and 
 - Cover letter: <file name, or none>
 - Transcript: <attached, not requested, or left for you>
 - Account: <site and email used to sign in, or none>
-- Status: ready to submit. Tell Claude when you've submitted, and about anything you changed first.
+- Status: ready to submit. Tell Antigravity when you've submitted, and about anything you changed first.
 
 ## Fields
 | Field (as labeled on the form) | Entered |

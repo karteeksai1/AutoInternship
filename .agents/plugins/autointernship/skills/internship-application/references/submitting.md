@@ -59,7 +59,7 @@ If any check fails, don't submit. Stop as in Fill all, and put the failed check 
 1. Click Submit once.
 2. Wait for the confirmation (a thank-you page or a message that the application was received). If a CAPTCHA appears, hand it over: the user solves it, clicks Submit and tells you.
 3. If no confirmation appears or the page shows an error, never click again (it can send the application twice). Log `Needs you` with next step "check whether it went through", and say so in the report.
-4. Once confirmed, set the record's status line to `Submitted by Claude, <YYYY-MM-DD HH:MM>. Confirmation: <the page's message or number>` and run `python scripts/tracker.py update "<folder>/tracker.xlsx" --id <id> --set status=Submitted`. Never `--set notes` here: it replaces the notes already there.
+4. Once confirmed, set the record's status line to `Submitted by Antigravity, <YYYY-MM-DD HH:MM>. Confirmation: <the page's message or number>` and run `python scripts/tracker.py update "<folder>/tracker.xlsx" --id <id> --set status=Submitted`. Never `--set notes` here: it replaces the notes already there.
 5. Then move to the next application.
 
 ### Batch runs

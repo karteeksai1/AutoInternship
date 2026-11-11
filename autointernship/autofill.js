@@ -1,11 +1,11 @@
 /* AutoInternship autofill
    Injected into the current tab only when you click "Fill this page", press the shortcut, or
-   (if you turned it on) Claude asks through the bridge (bridge.js).
+   (if you turned it on) Antigravity asks through the bridge (bridge.js).
    It reads your profile from chrome.storage.local, fills the fields it recognizes, never
    overwrites anything that already has a value, and outlines fields on the page:
      solid green  = filled from your profile
-     dashed amber = still empty, for you or Claude
-   fill() also returns a report for Claude: each field it filled with the value now on the page,
+     dashed amber = still empty, for you or Antigravity
+   fill() also returns a report for Antigravity: each field it filled with the value now on the page,
    and each field it left with its kind and choices. Nothing is sent anywhere. */
 (() => {
   if (globalThis.__autointernship) return;
@@ -1236,7 +1236,7 @@
 
   /* ---------- Main ---------- */
 
-  // opts.skipResume: don't attach the stored resume (set when Claude asks through the bridge).
+  // opts.skipResume: don't attach the stored resume (set when triggered through the bridge).
   // Returns { filled, left, resume, fields, prefilled, todo }; see "Report" above.
   // It fills only what's on the page now. On multi-step forms (Workday's "Save and Continue" pages) run it
   // again on each step; it never clicks Continue or Submit itself.
@@ -1250,7 +1250,7 @@
     const resume = opts.skipResume ? null : data.resume || null;
 
     clearMarks();
-    // saved: how many saved answers the extension has. Claude adds new ones to profile.json, which reaches the
+    // saved: how many saved answers the extension has. Antigravity adds new ones to profile.json, which reaches the
     // extension only when you restore it from that backup; the count in the report shows when that was missed.
     const stats = { filled: 0, left: 0, resume: null, fields: [], prefilled: [], todo: [], saved: (p.savedAnswers || []).length };
     const counters = Object.create(null);

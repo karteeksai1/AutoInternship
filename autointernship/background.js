@@ -17,7 +17,7 @@ chrome.commands.onCommand.addListener(async (command, tab) => {
 
 // The Fill button (bridge.js) can't inject autofill.js itself, so it asks here after a real click.
 // Only AutoInternship's own scripts can send this message; web pages can't. It fills only the frame
-// that asked, and never attaches the stored resume, because Claude attaches one tailored to each job.
+// that asked, and never attaches the stored resume, because Antigravity attaches one tailored to each job.
 chrome.runtime.onMessage.addListener((msg, sender, reply) => {
   if (!msg || msg.type !== 'autointernship:fill' || !sender.tab) return false;
   (async () => {

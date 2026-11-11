@@ -21,8 +21,8 @@ For Fill all or Submit, read `references/submitting.md` at the start. A mode las
 
 ## Files
 
-- **Never delete anything in the user's folders**, even files you just created: Cowork asks the user's permission for every deletion.
-- Draft and check in scratch space. Write to the user's folder only after the file passes its check below.
+- **Never delete anything in the user's folders**, even files you just created.
+- Draft and check in Antigravity's scratch space (your conversation `scratch/` directory or a temporary folder outside the job-search folder). Write to the user's folder only after the file passes its check below.
 - To replace a saved file, move the old one into `_old/` beside it, with the date and time in its name. `build_resume.py` and `tracker.py` do this themselves.
 - Edit in place: jobs.txt, tracker.xlsx, application-record.md, profile.json.
 
@@ -48,7 +48,7 @@ python scripts/find_internships.py --folder "<job-search folder>" [filters] --ap
 
 It adds open postings from the SimplifyJobs list (github.com/SimplifyJobs/Summer2027-Internships) for the user's term and degree level to jobs.txt, newest first, skipping ones already in the tracker or jobs.txt, and, for a U.S. profile, ones outside the U.S. (`--include-abroad` keeps them). No-sponsorship postings stay in below senior standing (step 2); `--needs-sponsorship` filters them out. Filters: `--category software|data|hardware|product|quant`, `--location` (state codes like CA, cities, SF, NYC, Remote; repeatable), `--keyword` and `--exclude-keyword` on the title, `--days N`, `--limit N`, `--needs-sponsorship`, `--no-citizenship`.
 
-Choose filters from what the user said, else from the profile (major, skills, work preference), and say which. The first time, run it without `--append`, show the matches (company, role, location, posted date) and ask which to queue. After that, or in auto mode, append directly. If the download fails, read the repo page's table in the browser. On code `NETWORK`, pass its `hint` to the user once.
+Choose filters from what the user said, else from the profile (major, skills, work preference), and say which. The first time, run it without `--append`, show the matches (company, role, location, posted date) and ask which to queue. After that, or in auto mode, append directly. If the download fails because the terminal sandbox blocks network access, retry with `BypassSandbox: true` (requiring user approval) or read the repo page's table in the browser. On code `NETWORK`, pass its `hint` to the user once.
 
 Then continue with "Batch runs".
 
@@ -68,7 +68,7 @@ Never operate LinkedIn: no Easy Apply, no browsing or reading its pages. Its ter
 python scripts/fetch_posting.py "<link>" --out-dir "<scratch>/postings" --tracker "<folder>/tracker.xlsx" --profile "<folder>/profile.json"
 ```
 
-It writes the posting as markdown, with the form's questions where the site publishes them (Greenhouse, Ashby) and a `Cover letter:` line (`cover_letter`: required, optional, asked, not wanted, none or unknown). It covers Greenhouse, Ashby, Lever, Workday, SmartRecruiters, Rippling, Oracle, iCIMS, Atlassian, Amazon, TikTok and ByteDance, and other sites whose pages carry job data (Meta, Jibe, Eightfold, Paylocity). Each posting gets a `screen` against the profile: `skip`, with the sentence in `screen_why`, is a step 2 skip; `check` quotes sentences to judge in step 2; `ok` still goes through step 2. When it can't (`error`), or for the user's open tab or pasted text, use the browser or the text. On `network_blocked`, pass its `hint` to the user once and use the browser for the rest of the session; do the same if every link fails with "couldn't connect". Follow job boards through to the real application form at step 5.
+It writes the posting as markdown, with the form's questions where the site publishes them (Greenhouse, Ashby) and a `Cover letter:` line (`cover_letter`: required, optional, asked, not wanted, none or unknown). It covers Greenhouse, Ashby, Lever, Workday, SmartRecruiters, Rippling, Oracle, iCIMS, Atlassian, Amazon, TikTok and ByteDance, and other sites whose pages carry job data (Meta, Jibe, Eightfold, Paylocity). Each posting gets a `screen` against the profile: `skip`, with the sentence in `screen_why`, is a step 2 skip; `check` quotes sentences to judge in step 2; `ok` still goes through step 2. When it can't (`error`), or for the user's open tab or pasted text, use the browser or the text. On `network_blocked`, retry with `BypassSandbox: true` (with user approval) or pass its `hint` to the user once and use the browser for the rest of the session; do the same if every link fails with "couldn't connect". Follow job boards through to the real application form at step 5.
 
 Capture: company, role, term, dates or length, location and on-site policy, pay, deadline, eligibility (class year, graduation window, degree level, majors, enrollment), required documents and the URL. On `check_company`, confirm the company name from the description.
 
@@ -90,7 +90,7 @@ Match each real requirement to evidence in courses, projects, experience and act
 
 Read `references/tailoring.md` before your first tailoring in a session, and `references/overleaf.md` too for a LaTeX master.
 
-1. **Copy the master into scratch space** and tailor the copy in the three passes from tailoring.md: the posting's angle, choose and order, rewrite every kept bullet. For a .docx master, edit inside its existing paragraphs (docx skill) and convert it to PDF.
+1. **Copy the master into scratch space** and tailor the copy in the three passes from tailoring.md: the posting's angle, choose and order, rewrite every kept bullet. For a .docx master, edit inside its existing paragraphs (using Python `python-docx`/XML, or an installed docx skill if present) and convert it to PDF (e.g., LibreOffice `soffice --headless --convert-to pdf`).
 2. **Check it.** It must be exactly one page.
 
    ```
@@ -110,7 +110,7 @@ Read `references/tailoring.md` before your first tailoring in a session, and `re
    - Exit 1 (compile error) and exit 3 (no LaTeX here): see overleaf.md.
 
    Repeat until `fix` is empty and every `review` item is handled.
-3. **Look at it**: view the page image (`image`). The layout matches the master, nothing runs past the margins, no section is empty, the bullets read naturally, and the text reaches close to the bottom. For a .docx master this is the only fill check.
+3. **Look at it**: view the rendered page image (`-page1.png` beside the PDF) with `read_file`. The layout matches the master, nothing runs past the margins, no section is empty, the bullets read naturally, and the text reaches close to the bottom. For a .docx master this is the only fill check.
 4. **Save**: copy the PDF and the tailored source (as `resume-src/`) into the job folder, the PDF named `Firstname_Lastname_Resume_Company.pdf`. First move an earlier resume PDF or resume-src/ there into `_old/`, with the date and time in their names.
 
 Write `changes.md`: after the last check, fill the `<...>` slots in the file the check wrote beside the PDF (`changes`), as tailoring.md's "changes.md" says, then copy it into the job folder as `changes.md`.

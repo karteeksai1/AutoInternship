@@ -13,8 +13,9 @@ desktop.ini
 # Chrome Web Store upload files: the extension zip, screenshot and listing text
 /store-listing/
 
-# Local notes for Claude Code
+# Local agent notes
 CLAUDE.md
+GEMINI.local.md
 
 # Personal job-search files, in case you run a search from this folder
 /resume/

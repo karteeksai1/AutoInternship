@@ -2,7 +2,7 @@
    shortcut and the Fill button on the page (bridge.js).
      opts.frameId     fill only this frame (the Fill button fills the frame it's in); otherwise every
                       frame AutoInternship is allowed to touch
-     opts.skipResume  don't attach the stored resume (Claude attaches one tailored to the job) */
+     opts.skipResume  don't attach the stored resume (Antigravity attaches one tailored to the job) */
 async function runFill(tabId, opts = {}) {
   const target = opts.frameId == null ? { tabId, allFrames: true } : { tabId, frameIds: [opts.frameId] };
   await chrome.scripting.executeScript({ target, files: ['autofill.js'] });

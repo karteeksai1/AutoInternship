@@ -17,7 +17,7 @@ Keep the user's internship applications current: what they applied to, where eac
 
 ## Files
 
-- **Never delete anything in the user's folders** (Cowork asks permission for every deletion), and never remove tracker rows unless the user asks: mark them `Withdrawn` or `Skipped`.
+- **Never delete anything in the user's folders**, and never remove tracker rows unless the user asks: mark them `Withdrawn` or `Skipped`.
 - Draft new files in scratch space; save them to the job folder only after checking them.
 - To replace a saved file, move the old one into `_old/` beside it with the date and time in its name.
 - Edit tracker.xlsx and application-record.md in place.
@@ -52,7 +52,7 @@ Run `summary` and answer with a short table (company, role, status, next step or
 
 ### "I submitted ..."
 
-Set the row to `Submitted`. For "I submitted all of them", list the `Ready to submit` rows and confirm once before updating them all. Rows Claude submitted are already `Submitted` ("Submitted by Claude" in the record's status line).
+Set the row to `Submitted`. For "I submitted all of them", list the `Ready to submit` rows and confirm once before updating them all. Rows Antigravity submitted are already `Submitted` ("Submitted by Antigravity" in the record's status line).
 
 Ask once whether they changed anything on the form before submitting. If so, add a `## Changes before submitting` section to application-record.md. Update the record's status line too.
 

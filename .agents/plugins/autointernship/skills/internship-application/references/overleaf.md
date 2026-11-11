@@ -10,7 +10,7 @@ The .tex file with `\documentclass`. If several have it, prefer `main.tex`, then
 
 Templates define their own commands in the preamble (before `\begin{document}`), such as `\resumeItem{...}`, `\resumeSubheading{title}{dates}{organization}{location}` or `\resumeProjectHeading{...}{date}`.
 
-- Never type LaTeX into a shell command, heredoc or script: write it with the Write tool (new files) or Edit (changes). Commands that only copy, cut or join existing files (`cp`, `head`, `cat`) are fine.
+- Never type LaTeX into a shell command, heredoc or script: write it with `write_file` (new files) or `edit_file` (changes). Commands that only copy, cut or join existing files (`cp`, `head`, `cat`) are fine.
 - Leave the preamble and every `\newcommand` definition alone, except the spacing numbers you may adjust when squeezing (tailoring.md), and: if it compiles with pdflatex and lacks `\input{glyphtounicode}` and `\pdfgentounicode=1`, add both to the copy.
 - Change only the text inside the template commands' arguments and plain body text.
 - Reorder by moving whole items (one `\resumeItem{...}` line, or a heading with its item list). Trim by deleting whole items. Keep every `{` matched with its `}`.

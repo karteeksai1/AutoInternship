@@ -1,17 +1,17 @@
 /* Fill button
-   Claude in Chrome can't press AutoInternship's shortcut, open its popup or run JavaScript on a page,
-   but it can click and read. So on application pages this adds a small "Fill with AutoInternship" button.
+   Browser automation can't press AutoInternship's shortcut or open its popup,
+   but it can click and read the page. So on application pages this adds a small "Fill with AutoInternship" button.
    Clicking it fills the page, and a panel beside it lists what was filled, what was already filled and
-   what's left. You read the panel; Claude reads the same report from the page text (a hidden copy at the
+   what's left. You read the panel; Antigravity reads the same report from the page text (a hidden copy at the
    top of the form), and works through what's left instead of the whole form, which saves time and tokens.
 
-   Only real clicks count: yours, or Claude's, which reach Chrome as real mouse input. A page's own scripts
+   Only real clicks count: yours, or Antigravity's browser click, which reaches Chrome as real mouse input. A page's own scripts
    can't fake one (event.isTrusted is false for script clicks), so a page can't start a fill by itself.
 
    Runs on the application sites listed in manifest.json. The button appears only in frames that have a
    form, and only while "Show the Fill button on application pages" is on (the default). On multi-step
    forms (Workday's "Save and Continue"), click it again on each step. It never attaches your stored
-   resume, because Claude attaches one tailored to each job; the popup and shortcut still do. */
+   resume, because Antigravity attaches one tailored to each job; the popup and shortcut still do. */
 (() => {
   if (window.__autointernshipButton) return;
   window.__autointernshipButton = true;
@@ -83,9 +83,9 @@
     if (copy && copyFields.filter((f) => f.isConnected).length < copyFields.length / 2) hideReport();
   });
 
-  // Claude reads pages with get_page_text, which keeps only the page's main content when there is one
+  // Page-text readers often keep only the page's main content when there is one
   // (<main>, <article> or a content <div>). The panel lives in <body>, outside all of those, so on
-  // Greenhouse job boards and Workday, Claude never saw the report and found every field by screenshot.
+  // Greenhouse job boards and Workday, an agent wouldn't see the report without screenshots.
   // The form is always in the part that's kept, so a copy of the report goes at the top of it: the <form>
   // with the most fields, or else the closest element holding them all (fields in the site's header or
   // menu don't count). The copy is hidden the way "Skip to main content" links are: invisible and taking
@@ -128,7 +128,7 @@
   async function run(button) {
     hideReport(); // the last report is out of date as soon as a new fill starts
     // A fill with many dropdowns takes several seconds. A page read in the meantime should say so,
-    // rather than look like a page with no report at all (which sends Claude back to screenshots).
+    // rather than look like a page with no report at all (which forces fallback to screenshots).
     placeCopy('AutoInternship report: still filling this page. Wait a few seconds and read the page again.');
     button.disabled = true;
     button.textContent = 'Filling…';
@@ -144,7 +144,7 @@
   }
 
   // The report as plain text, so it reads the same on screen, in a screenshot and in the page text.
-  // Kept short on purpose, because Claude reads all of it on every page: what's left (the part to act on)
+  // Kept short on purpose, because Antigravity reads all of it on every page: what's left (the part to act on)
   // comes first, one line each; what was filled follows as one compact line, since it's only needed for
   // the application record. Long labels, values and choice lists are cut with "…" (full values are in
   // the profile). Name boxes the site filled differently from the profile get their own "Check" lines
@@ -158,7 +158,7 @@
 
   function reportText(r) {
     if (!r.ok) return `AutoInternship couldn't fill this page: ${r.error}`;
-    // The saved-answer count lets Claude see when the extension is behind profile.json (see autofill.js).
+    // The saved-answer count lets Antigravity see when the extension is behind profile.json (see autofill.js).
     const lines = [`AutoInternship report: filled ${r.filled}, left ${r.left}.${r.saved != null ? ` Profile: ${r.saved} saved answers.` : ''}`];
     const differ = r.prefilled.filter((f) => f.profile);
     const same = r.prefilled.filter((f) => !f.profile);
@@ -170,7 +170,7 @@
       lines.push('', "Check: the profile's date isn't offered, so the closest one was picked:", ...nearest.map((f) => `- ${pair(f)} (profile: ${cut(f.profile, 60)})`));
     }
     if (r.todo.length) {
-      lines.push('', 'Left for you or Claude (* = required):', ...r.todo.map((t) =>
+      lines.push('', 'Left for you or Antigravity (* = required):', ...r.todo.map((t) =>
         `- ${cut(t.label, 90)}${t.required ? '*' : ''} (${KIND[t.kind] || t.kind}${t.options ? `: ${choices(t.options)}` : ''})`));
     }
     if (r.fields.length) lines.push('', `Filled: ${r.fields.map(pair).join(' · ')}`);

@@ -1,9 +1,9 @@
 # AutoInternship
 
-A Chrome extension that fills job applications from a profile you save once, then leaves the rest to Claude. It never overwrites what's already filled and never submits.
+A Chrome extension that fills job applications from a profile you save once, then leaves the rest to Antigravity. It never overwrites what's already filled and never submits.
 
 - **Solid green outline**: filled from your profile.
-- **Dashed amber outline**: still empty, for you or Claude.
+- **Dashed amber outline**: still empty, for you or Antigravity.
 
 ## Install
 
@@ -25,9 +25,9 @@ Click **Fill with AutoInternship** on the right edge of the application page. A 
 
 On forms with several steps (Workday's **Save and Continue**), fill again on each step. Running it twice is safe.
 
-## Use with Claude
+## Use with Antigravity
 
-The `internship-application` skill in this repo reads your answers from `profile.json` and clicks the Fill button itself on each page. Then it reads the same report from the page text and works only on what's left, which is faster and uses far fewer tokens than filling every field.
+The `internship-application` skill in this repo's Antigravity plugin (`.agents/plugins/autointernship/`) reads your answers from `profile.json` and clicks the Fill button itself on each page. Then it reads the same report from the page text and works only on what's left, which is faster and uses far fewer tokens than filling every field.
 
 ## What it fills
 
@@ -37,7 +37,7 @@ Name, contact details, address, links, education, student questions (graduation,
 - **Voluntary self-identification** (gender, pronouns, Hispanic or Latino, race, veteran, disability, LGBTQ+, transgender, sexual orientation) is filled only with the choice you pick for each, including "Decline to answer". "Not set" leaves it for you.
 - **Saved answers** teach it new questions: if a question contains your phrase, it uses your answer.
 
-It always leaves these for you or Claude: open-ended questions, cover letters, consent and "I certify" checkboxes, religion and marital status questions, ID numbers, date of birth, bank details, and anything it can't match confidently.
+It always leaves these for you or Antigravity: open-ended questions, cover letters, consent and "I certify" checkboxes, religion and marital status questions, ID numbers, date of birth, bank details, and anything it can't match confidently.
 
 ## Privacy
 
@@ -46,7 +46,7 @@ Your profile and resume stay in this browser. AutoInternship makes no network re
 ## If something goes wrong
 
 - **Nothing happens on an embedded form:** open the form on its own page.
-- **A field stayed amber or didn't stick:** pick it yourself or let Claude. Add a saved answer for questions you see often.
+- **A field stayed amber or didn't stick:** pick it yourself or let Antigravity. Add a saved answer for questions you see often.
 - **No Fill button:** it shows only on the listed sites, once the page has a form. Check it's turned on in the profile page. If you just reloaded the extension, reload the page too.
 - **Resume didn't attach:** some sites block scripted uploads. Attach it yourself.
 

@@ -1,0 +1,11 @@
+{
+  "name": "autointernship",
+  "displayName": "AutoInternship",
+  "description": "Find internships (SimplifyJobs), tailor one-page Overleaf or Word resumes, fill application forms with the AutoInternship Chrome extension, and track applications in Excel.",
+  "version": "1.0.0",
+  "suggestedPrompts": [
+    "Find software engineering internships in CA and queue them",
+    "Apply to 6 jobs fill all",
+    "Where do my internship applications stand?"
+  ]
+}

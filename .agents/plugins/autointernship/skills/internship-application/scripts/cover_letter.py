@@ -20,7 +20,7 @@ What it does:
      form whose only upload box has to take both.
 
 Why a script: the first letters were hand-written LaTeX, three or four calls each, and one of them came out with
-"ﬁ" ligature characters in its text. The text-to-PDF step is the same every time; only the words need Claude.
+"ﬁ" ligature characters in its text. The text-to-PDF step is the same every time; only the words need Antigravity.
 
 Prints one JSON object: "fix" (change before saving), "review" (look at each one), the word count and the paths.
 Exit codes: 0 nothing to fix or review, 2 something under fix or review, 1 bad input or compile error,

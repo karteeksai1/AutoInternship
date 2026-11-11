@@ -24,7 +24,7 @@
       <a href="#eligibility">Eligibility and preferences</a>
       <a href="#self-id">Voluntary self-identification</a>
       <a href="#answers">Saved answers</a>
-      <a href="#claude-rules">Instructions for Claude</a>
+      <a href="#agent-rules">Instructions for Antigravity</a>
       <a href="#fill-button">Fill button</a>
       <a href="#backup">Backup</a>
     </nav>
@@ -32,8 +32,8 @@
     <main>
       <div class="intro">
         <h1>Your application profile</h1>
-        <p>Fill this in once. AutoInternship uses it to fill job applications, and Claude reads the same answers from your backup (profile.json). Nothing leaves this browser unless you download the backup.</p>
-        <p>Want Claude to do everything? The free internship-application skill finds internships, tailors your resume to each one and fills the forms, using this profile. It needs a paid Claude plan. <a class="out-link" href="https://github.com/pqthangv/AutoInternshipClaude" target="_blank" rel="noopener">Get it on GitHub ↗</a></p>
+        <p>Fill this in once. AutoInternship uses it to fill job applications, and Antigravity reads the same answers from your backup (profile.json). Nothing leaves this browser unless you download the backup.</p>
+        <p>Want Antigravity to do everything? The free internship-application skill finds internships, tailors your resume to each one and fills the forms, using this profile. <a class="out-link" href="https://github.com/pqthangv/AutoInternshipClaude" target="_blank" rel="noopener">Get it on GitHub ↗</a></p>
       </div>
 
       <section id="you">
@@ -92,13 +92,13 @@
           <label class="field wide"><span>Relevant coursework</span><textarea data-key="relevantCoursework" rows="2" placeholder="Data Structures, Algorithms, Databases, Probability and Statistics"></textarea></label>
           <label class="field wide"><span>Work authorization details</span><input data-key="workAuthDetails" placeholder="Optional, for example: F-1 student, eligible for CPT"></label>
         </div>
-        <p class="lede" style="margin-top:12px">Claude uses work authorization details only for written answers. Yes-or-no questions use your answers under Eligibility and preferences.</p>
+        <p class="lede" style="margin-top:12px">Antigravity uses work authorization details only for written answers. Yes-or-no questions use your answers under Eligibility and preferences.</p>
         <datalist id="standingList"><option value="Freshman"><option value="Sophomore"><option value="Junior"><option value="Senior"><option value="Graduate student"></datalist>
       </section>
 
       <section id="work">
         <h2>Experience</h2>
-        <p class="lede">Internships, research, campus jobs and part-time work, most recent first. Forms that ask for your current employer and title get the first entry. Highlights give Claude real material for open-ended questions.</p>
+        <p class="lede">Internships, research, campus jobs and part-time work, most recent first. Forms that ask for your current employer and title get the first entry. Highlights give Antigravity real material for open-ended questions.</p>
         <p class="list-empty" data-empty="work">No experience added yet. Part-time and campus jobs count.</p>
         <div data-list="work"></div>
         <button type="button" class="btn" data-add="work">Add experience</button>
@@ -173,14 +173,14 @@
 
       <section id="answers">
         <h2>Saved answers</h2>
-        <p class="lede">When a question contains your phrase, AutoInternship fills in your answer. These take priority over everything else, and Claude sees them too.</p>
+        <p class="lede">When a question contains your phrase, AutoInternship fills in your answer. These take priority over everything else, and Antigravity sees them too.</p>
         <p class="list-empty" data-empty="savedAnswers">No saved answers yet. A good first one: “how did you hear” → “LinkedIn”.</p>
         <div data-list="savedAnswers"></div>
         <button type="button" class="btn" data-add="savedAnswers">Add saved answer</button>
       </section>
 
-      <section id="claude-rules">
-        <h2>Instructions for Claude</h2>
+      <section id="agent-rules">
+        <h2>Instructions for Antigravity</h2>
         <p class="lede">The internship-application skill reads these from your backup (profile.json) when it writes answers for you.</p>
         <div class="grid">
           <label class="field wide"><span>How you write</span><textarea data-key="writingStyle" rows="3" placeholder="Plain and direct. Short sentences. No buzzwords. Mention specific results with numbers."></textarea></label>
@@ -190,7 +190,7 @@
 
       <section id="fill-button">
         <h2>Fill button</h2>
-        <p class="lede">Application pages get a small “Fill with AutoInternship” button on the right edge. You or Claude click it, and a panel lists what was filled and what’s left, so Claude only works on the rest. It never attaches your stored resume, because Claude attaches one tailored to each job (the popup and shortcut still do).</p>
+        <p class="lede">Application pages get a small “Fill with AutoInternship” button on the right edge. You or Antigravity click it, and a panel lists what was filled and what’s left, so Antigravity only works on the rest. It never attaches your stored resume, because Antigravity attaches one tailored to each job (the popup and shortcut still do).</p>
         <div class="action">
           <label class="switch"><input type="checkbox" id="fillButton"> Show the Fill button on application pages</label>
           <p>Only a real click starts a fill, so a web page can’t start one by itself.</p>

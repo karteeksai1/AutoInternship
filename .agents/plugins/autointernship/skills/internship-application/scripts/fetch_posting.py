@@ -64,9 +64,8 @@ class Failed(Exception):
 
 
 class Blocked(Failed):
-    """This computer's network refused the site. Cowork's sandbox reaches only the sites it's allowed, and its
-    proxy answers the rest with "Tunnel connection failed: 403 Forbidden"; until 2026-11-04 that read as a plain
-    connection error, so every posting silently went through the browser instead."""
+    """This computer's network refused the site. Antigravity's terminal sandbox blocks network access by default
+    (or an allowlist proxy rejects it); until handled, postings fall back to the browser."""
 
     def __init__(self, host):
         self.host = host
@@ -179,7 +178,7 @@ def money(n, currency='USD'):
 
 
 # Fields every application has. The extension fills these, so listing them would only add reading. The cover
-# letter isn't one of them: the extension never attaches it, and Claude writes one for it (cover_letter() below).
+# letter isn't one of them: the extension never attaches it, and Antigravity writes one for it (cover_letter() below).
 STANDARD = re.compile(r'^((preferred |legal |full )?(first |last )?name|e ?mail( address)?|phone( number)?|mobile( phone)?|'
                       r'resume|cv|resume cv|(linkedin|github|portfolio|personal website|website|websites|'
                       r'other website)( profile| url| link)?|(other |additional )?links?|location( city)?|city|current location)$')
@@ -1097,7 +1096,8 @@ def main():
         extra = sorted(h for h in blocked if h not in ALLOW and not h.endswith(('.myworkdayjobs.com', '.myworkdaysite.com', '.oraclecloud.com', '.icims.com')))
         out['network_blocked'] = sorted(blocked)
         out['hint'] = ("This computer's network blocks the job sites, so these postings need the browser. To fetch them "
-                       "without it, allow these domains in the Claude app's settings for code execution (network access): "
+                       "without it, run outside the terminal sandbox (with user approval) or allow these domains in "
+                       "Antigravity's Internet Access Policy / network allowlist: "
                        + ', '.join(ALLOW + extra) + '. If wildcards (*) aren\'t accepted, add each Workday host instead, '
                        'such as ' + (next((h for h in sorted(blocked) if 'myworkday' in h), 'nvidia.wd5.myworkdayjobs.com')) + '.')
     if tracker_note:

@@ -72,7 +72,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .link-btn:hover { color: var(--ink); }
 .link-btn.danger:hover { color: var(--danger); }
 .link-btn:disabled { visibility: hidden; }
-/* Links out to the project page, where the Claude skills are. They open in a new tab. */
+/* Links out to the project page, where the Antigravity plugin lives. They open in a new tab. */
 .out-link { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
 .out-link:hover { color: var(--filled); }
 

@@ -192,7 +192,7 @@ def lock_tracker(path):
     """Wait until no other tracker.py call is using this tracker, then hold it until this process exits.
 
     Batch runs log applications from several subagents at once, and the user may run more than one
-    Claude session. Every call loads the whole workbook and saves the whole workbook, so two at once
+    Antigravity session. Every call loads the whole workbook and saves the whole workbook, so two at once
     lose rows (the later save drops the other's row) and a read during a save fails on a half-written
     file. Tested: 8 adds at once kept 3 or 4 rows. Reads take the lock too, for the second reason.
 

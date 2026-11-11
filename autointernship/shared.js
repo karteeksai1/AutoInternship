@@ -18,7 +18,7 @@ const AutoInternship = (() => {
       gender: '', pronouns: '', hispanicLatino: '', race: '', veteranStatus: '', disabilityStatus: '', lgbtq: '',
       transgender: '', sexualOrientation: '',
       savedAnswers: [],
-      // For Claude's written answers; the internship-application skill reads these from profile.json.
+      // For Antigravity's written answers; the internship-application skill reads these from profile.json.
       writingStyle: '', extraRules: '',
     };
   }

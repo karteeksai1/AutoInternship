@@ -203,7 +203,7 @@ Write one when job-posting.md's `Cover letter:` line says `required`, `optional`
 - Facts only from the master and profile, as on the resume ("What you may not change"). A skill the posting asks for and the master doesn't show stays out.
 - In the user's `writingStyle`, following any `extraRules`.
 
-Write it with the Write tool as `<scratch>/cover-letter.txt`, then build and check it:
+Write it with `write_file` as `<scratch>/cover-letter.txt`, then build and check it:
 
 ```
 python scripts/cover_letter.py "<scratch>/cover-letter.txt" --profile "<folder>/profile.json" --master "<master>" --company "<Company>" --role "<Role>" --posting "<job folder>/job-posting.md" --out "<scratch>/Firstname_Lastname_Cover_Letter_Company.pdf"
@@ -211,5 +211,5 @@ python scripts/cover_letter.py "<scratch>/cover-letter.txt" --profile "<folder>/
 
 - Change everything under `fix`, and handle each `review` item: a term from the posting may name the company's work, never a skill of the user's. Repeat until `fix` is empty.
 - For `asked`, also pass `--combine "<scratch>/Firstname_Lastname_Resume_Company.pdf"` (the checked resume). It writes `Firstname_Lastname_Resume_and_Cover_Letter_Company.pdf`, resume first, for a form with one upload box.
-- Exit 3 (no LaTeX here): make the same letter as `Firstname_Lastname_Cover_Letter_Company.docx` with the docx skill.
+- Exit 3 (no LaTeX here): make the same letter as `Firstname_Lastname_Cover_Letter_Company.docx` using Python (`python-docx`) or an installed docx skill if available.
 - Save: copy the letter (and the combined PDF) and `cover-letter.txt` into the job folder. First move an earlier letter there into `_old/`, with the date and time in its name.

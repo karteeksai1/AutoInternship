@@ -17,7 +17,7 @@ TAILORED is the tailored source in scratch space (.tex or .docx). In order, it r
 
 Why one command: running the four scripts one by one took five tool calls per try, and each printed every bullet
 and keyword again, though only the problems change what to do next. The full before -> after pairs go into
-changes.md itself (NAME-changes.md beside the PDF), in its final format with <...> slots for the parts only Claude
+changes.md itself (NAME-changes.md beside the PDF), in its final format with <...> slots for the parts only the agent
 can write, so they're never retyped. The posting's keyword lists are printed under "keywords" for those slots.
 
 Prints one JSON object: "fix" (change before saving), "review" (change each one, or say why not in changes.md),
@@ -91,9 +91,9 @@ def posting_title(posting):
 
 
 def write_changes(path, bullets, page, posting):
-    """changes.md with everything a script can fill in, and <...> slots for what only Claude can write.
+    """changes.md with everything a script can fill in, and <...> slots for what only the agent can write.
 
-    Claude used to read a draft of the pairs and keywords and retype all of it into changes.md (2-3k output tokens
+    Previously the agent had to read a draft of the pairs and keywords and retype all of it into changes.md (2-3k output tokens
     per resume, the priciest kind). Now it copies this file into the job folder and edits only the slots: Angle,
     What changed, Requirements covered, ATS keywords, Gaps, and the reason on the Page line when lines are left free.
     """
