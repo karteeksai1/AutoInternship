@@ -50,6 +50,22 @@ It adds open postings from the SimplifyJobs list (github.com/SimplifyJobs/Summer
 
 Choose filters from what the user said, else from the profile (major, skills, work preference), and say which. The first time, run it without `--append`, show the matches (company, role, location, posted date) and ask which to queue. After that, or in auto mode, append directly. If the download fails because the terminal sandbox blocks network access, retry with `BypassSandbox: true` (requiring user approval) or read the repo page's table in the browser. On code `NETWORK`, pass its `hint` to the user once.
 
+### Finding internships outside SimplifyJobs (India, Remote, or custom ATS boards)
+
+SimplifyJobs focuses mostly on U.S./Canada/Europe roles. When `profile.json` is outside those regions (e.g., `country` is `India`) or the user asks for roles/locations SimplifyJobs doesn't cover:
+
+1. Use `search_web` to find **recent** active postings (prefer last 14–30 days) on direct no-login ATS boards (`site:job-boards.greenhouse.io OR site:boards.greenhouse.io`, `site:jobs.lever.co`, `site:jobs.ashbyhq.com`, `site:apply.workable.com`) AND public listings on `wellfound.com` / `naukri.com` matching the user's target roles in `profile.json` (`extraRules`, `summary`, `skills`), `internshipTerm`/graduation year (including full-time roles open to the user's graduation cohort if specified), and target locations. Never include `linkedin.com`.
+2. When the user asks to search **Wellfound** or **Naukri** directly (or when `search_web` hits login/dynamic-rendering walls), open Wellfound (`wellfound.com/jobs`) and/or Naukri (`naukri.com`) in the Chrome browser (using the user's already signed-in Chrome DevTools session; if not signed in, ask the user to log in once—never enter passwords or solve CAPTCHAs), filter by recent postings, target titles, and Hyderabad/Remote, and collect the matching posting URLs (or read their descriptions directly from the tab).
+3. If `<folder>/boards.txt` exists or the user names companies on Greenhouse/Lever/Ashby, scan their public boards with:
+   ```
+   python scripts/search_ats.py --folder "<job-search folder>" [--board provider:slug] [--keyword intern] [--location India] --days 30 --append
+   ```
+4. Queue any `search_web`, Wellfound, or Naukri hits into `jobs.txt` cleanly (deduplicated against `tracker.xlsx` and `jobs.txt`) with:
+   ```
+   python scripts/search_ats.py --folder "<job-search folder>" --add-url "<url1>" --add-url "<url2>" --append
+   ```
+   Show the found roles first unless in auto mode, then continue with "Batch runs".
+
 Then continue with "Batch runs".
 
 ## LinkedIn
